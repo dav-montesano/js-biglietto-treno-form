@@ -28,30 +28,65 @@ submitButton.addEventListener(`click`, function(event) {
     console.log(distanceKm.value)
     console.log(agePassenger.value)
     
-   
-    if ((isNaN(agePassenger.value) || agePassenger.value <= 0) || (isNaN(distanceKm.value) || distanceKm.value <= 0)) {
-        if (isNaN(distanceKm.value) || distanceKm.value <= 0) {
-            distanceKm.classList.add(`is-invalid`) 
-            resultCard.classList.add(`d-none`)
-        } else if (isNaN(agePassenger.value) || agePassenger.value <= 0) {
-            agePassenger.classList.add(`is-invalid`) 
-            resultCard.classList.add(`d-none`)
-        }
+    let valid = true;
+    if (isNaN(distanceKm.value) || distanceKm.value <= 0) {
+        distanceKm.classList.add(`is-invalid`); // Aggiungi classe invalid
+        resultCard.classList.add(`d-none`)
+        valid = false;
     } else {
-        function getTicketPrice (agePassenger, distanceKm) {
-            const basicPrice = 0.21 * distanceKm.value;
-            if (agePassenger.value < 18) {
-                return basicPrice * 0.8;
-            } else if (agePassenger.value > 65) {
-                return basicPrice * 0.6;
+        distanceKm.classList.remove(`is-invalid`); // Rimuovi classe invalid
+    }
+    if (isNaN(agePassenger.value) || agePassenger.value <= 0) {
+        agePassenger.classList.add(`is-invalid`); // Aggiungi classe invalid
+        resultCard.classList.add(`d-none`)
+        valid = false;
+    } else {
+        agePassenger.classList.remove(`is-invalid`); // Rimuovi classe invalid
+    }
+    if (valid) {
+        function getTicketPrice(age, distance) {
+            const basicPrice = 0.21 * distance;
+            if (age < 18) {
+                return basicPrice * 0.8; // Sconto 20%
+            } else if (age > 65) {
+                return basicPrice * 0.6; // Sconto 40%
             } else {
-                return basicPrice;
+                return basicPrice; // Prezzo pieno
             }
         }
-        agePassenger.classList.remove(`is-invalid`) 
-        distanceKm.classList.remove(`is-invalid`) 
-        resultCard.classList.remove(`d-none`)
-        const finalPrice = getTicketPrice (agePassenger, distanceKm);
-        resultAmount.innerHTML = `The result is ${finalPrice.toFixed(2)}`
+        const finalPrice = getTicketPrice(Number(agePassenger.value), Number(distanceKm.value));
+        resultCard.classList.remove(`d-none`);
+        resultAmount.innerHTML = `The result is €${finalPrice.toFixed(2)}`;
     }
+
+
+
+
+    
+   
+    // if ((isNaN(agePassenger.value) || agePassenger.value <= 0) || (isNaN(distanceKm.value) || distanceKm.value <= 0)) {
+    //     if (isNaN(distanceKm.value) || distanceKm.value <= 0) {
+    //         distanceKm.classList.add(`is-invalid`) 
+    //         resultCard.classList.add(`d-none`)
+    //     } else if (isNaN(agePassenger.value) || agePassenger.value <= 0) {
+    //         agePassenger.classList.add(`is-invalid`) 
+    //         resultCard.classList.add(`d-none`)
+    //     }
+    // } else {
+    //     function getTicketPrice (agePassenger, distanceKm) {
+    //         const basicPrice = 0.21 * distanceKm.value;
+    //         if (agePassenger.value < 18) {
+    //             return basicPrice * 0.8;
+    //         } else if (agePassenger.value > 65) {
+    //             return basicPrice * 0.6;
+    //         } else {
+    //             return basicPrice;
+    //         }
+    //     }
+    //     agePassenger.classList.remove(`is-invalid`) 
+    //     distanceKm.classList.remove(`is-invalid`) 
+    //     resultCard.classList.remove(`d-none`)
+    //     const finalPrice = getTicketPrice (agePassenger, distanceKm);
+    //     resultAmount.innerHTML = `The result is ${finalPrice.toFixed(2)}`
+    // }
 })
