@@ -12,15 +12,20 @@ console.log(document);
 const submitButton = document.querySelector(`#submitButton`);
 submitButton.addEventListener(`click`, function(event) {
     event.preventDefault()
-    // submitButton.disabled = true;
+    
 
     const spinnerEL = submitButton.querySelector(`#spinner`)
     const statusSpan = submitButton.querySelector(`.status`)
     const resultCard = document.querySelector(`#result-card`)
     const resultAmount = document.querySelector(`#result`)
     const originalStatusText = statusSpan.innerHTML
-    // spinnerEL.classList.toggle(`d-none`)
-    // statusSpan.innerHTML= `Loading`
+    
+    resultCard.classList.add(`d-none`)
+    submitButton.disabled = true;
+    spinnerEL.classList.toggle(`d-none`)
+    statusSpan.innerHTML= `Loading`
+    
+    
 
     const distanceKm = document.querySelector(`#input-km`)
     const agePassenger = document.querySelector(`#input-age`)
@@ -32,6 +37,9 @@ submitButton.addEventListener(`click`, function(event) {
     if (isNaN(distanceKm.value) || distanceKm.value <= 0) {
         distanceKm.classList.add(`is-invalid`); // Aggiungi classe invalid
         resultCard.classList.add(`d-none`)
+        submitButton.disabled = false;
+        spinnerEL.classList.add(`d-none`)
+        statusSpan.innerHTML= originalStatusText
         valid = false;
     } else {
         distanceKm.classList.remove(`is-invalid`); // Rimuovi classe invalid
@@ -39,6 +47,9 @@ submitButton.addEventListener(`click`, function(event) {
     if (isNaN(agePassenger.value) || agePassenger.value <= 0) {
         agePassenger.classList.add(`is-invalid`); // Aggiungi classe invalid
         resultCard.classList.add(`d-none`)
+        submitButton.disabled = false;
+        spinnerEL.classList.add(`d-none`)
+        statusSpan.innerHTML= originalStatusText
         valid = false;
     } else {
         agePassenger.classList.remove(`is-invalid`); // Rimuovi classe invalid
@@ -55,14 +66,19 @@ submitButton.addEventListener(`click`, function(event) {
             }
         }
         const finalPrice = getTicketPrice(Number(agePassenger.value), Number(distanceKm.value));
-        resultCard.classList.remove(`d-none`);
-        resultAmount.innerHTML = `The result is €${finalPrice.toFixed(2)}`;
+        setTimeout(() => {
+            submitButton.disabled = false;
+            spinnerEL.classList.toggle(`d-none`)
+            statusSpan.innerHTML= originalStatusText
+            resultCard.classList.remove(`d-none`);
+            resultAmount.innerHTML = `The result is €${finalPrice.toFixed(2)}`;
+        }, 2000);       
     }
 
 
 
 
-    
+
    
     // if ((isNaN(agePassenger.value) || agePassenger.value <= 0) || (isNaN(distanceKm.value) || distanceKm.value <= 0)) {
     //     if (isNaN(distanceKm.value) || distanceKm.value <= 0) {
